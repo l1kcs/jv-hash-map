@@ -31,8 +31,8 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
                 continue;
             }
             while (node != null) {
-                int index = Math.abs(node.key == null ? 0 :
-                        (int) (node.key.hashCode() % newTable.length));
+                int index = node.key == null ? 0 :
+                        (int) (node.key.hashCode() & 0x7FFFFFFF % newTable.length);
                 newTable[index] = new Node<>(node.key, node.value, newTable[index]);
                 node = node.next;
             }
@@ -45,7 +45,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         if (size > DEFAULT_LOAD_FACTOR * table.length) {
             resize();
         }
-        int index = Math.abs(key == null ? 0 : (int) (key.hashCode() % table.length));
+        int index = key == null ? 0 : (int) (key.hashCode() & 0x7FFFFFFF % table.length);
         if (table[index] == null) {
             table[index] = new Node<>(key,value,null);
             size++;
@@ -76,7 +76,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     @Override
     public V getValue(K key) {
-        int index = Math.abs(key == null ? 0 : (int) (key.hashCode() % table.length));
+        int index = key == null ? 0 : (int) (key.hashCode() & 0x7FFFFFFF % table.length);
         Node<K, V> currentNode = table[index];
         while (currentNode != null) {
             if (Objects.equals(currentNode.key, key)) {
